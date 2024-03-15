@@ -1,1 +1,3 @@
 https://acolard.github.io/mBot_Simul/index.html?a=0
+
+Changer a=0, par a=1 ou a=2, ...
