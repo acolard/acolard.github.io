@@ -31,9 +31,9 @@ for (let index = 1; index < 11; index++) {
 
 var obstList = [
   [600, 200, 20, 20, "#9ba39d", 1], // #9ba39d = couleur des ostacles
-  [350, 250, 100, 60, "#ffd269", 1], // #ffd269 = couleur des tunnels
-  [350, 220, 100, 2, "#9ba39d", 1], // #ffd269 = couleur des tunnels
-  [350, 280, 100, 2, "#9ba39d", 1], // #ffd269 = couleur des tunnels
+  [350, 250, 100, 60, "#ffd269", 0.5], // #ffd269 = couleur des tunnels
+  [350, 220, 100, 2, "#9ba39d", 1], // #9ba39d = couleur des ostacles
+  [350, 280, 100, 2, "#9ba39d", 1], // #9ba39d = couleur des ostacles
 
 ]; // centerx, centery, length, width, color (r:155, g:163, b:157, a:255), alpha
 //-----------------------------------------------------------
