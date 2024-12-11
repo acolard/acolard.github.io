@@ -13,4 +13,6 @@ Changer a=0 (A0.js), par a=1 (A1.js) ou a=2 (A2.js), ...
     import { envParamA4 } from "./A4.js"
   
     ActivityList[4] = envParamA4;
+
+Barre éspace pour ramener le mBot à sa position d'origine
                                     
