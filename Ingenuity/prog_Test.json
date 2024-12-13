@@ -1,0 +1,261 @@
+{
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "start",
+        "id": "$V-UtS#ziL}]|lIRe92?",
+        "x": 43,
+        "y": 76,
+        "next": {
+          "block": {
+            "type": "altitude",
+            "id": "YTv}xuLJT+qf)wC~S)MY",
+            "fields": { "meter": "1" },
+            "next": {
+              "block": {
+                "type": "move",
+                "id": ";Y7^gpJ;v~n0[q^GF4Z-",
+                "fields": { "direction": "front" },
+                "next": {
+                  "block": {
+                    "type": "controls_whileUntil",
+                    "id": ",f)Y81.J=6@-`2Nb~GqF",
+                    "fields": { "MODE": "WHILE" },
+                    "inputs": {
+                      "BOOL": {
+                        "block": {
+                          "type": "logic_compare",
+                          "id": "g.]]#9i($siV]IVs95Zi",
+                          "fields": { "OP": "NEQ" },
+                          "inputs": {
+                            "A": {
+                              "block": {
+                                "type": "colorDetect",
+                                "id": ")TU^T1~-li9Bv-3${8D1"
+                              }
+                            },
+                            "B": {
+                              "block": {
+                                "type": "rouge",
+                                "id": "{]em~ob|}P:F7XJr+wvn"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "DO": {
+                        "block": {
+                          "type": "colorDetecting",
+                          "id": "!IHP].txowvs_m^_XM:B"
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "rotateangle",
+                        "id": "X$ctc@{.zGbQDA$G6sq=",
+                        "fields": { "angle": 90, "sensAngle": "-1" },
+                        "next": {
+                          "block": {
+                            "type": "altitude",
+                            "id": "O5NoK:;zuI=el20;z*D$",
+                            "fields": { "meter": "2" },
+                            "next": {
+                              "block": {
+                                "type": "move",
+                                "id": "/}m:aHM7|z/a^nEE9t~/",
+                                "fields": { "direction": "front" },
+                                "next": {
+                                  "block": {
+                                    "type": "controls_whileUntil",
+                                    "id": "BQn=6^Qhk]8C$paBZk-2",
+                                    "fields": { "MODE": "WHILE" },
+                                    "inputs": {
+                                      "BOOL": {
+                                        "block": {
+                                          "type": "logic_compare",
+                                          "id": "X)K![_a#bKN#gRGeJ=m=",
+                                          "fields": { "OP": "NEQ" },
+                                          "inputs": {
+                                            "A": {
+                                              "block": {
+                                                "type": "colorDetect",
+                                                "id": "brZaIdqE.e~{ufRe+bjs"
+                                              }
+                                            },
+                                            "B": {
+                                              "block": {
+                                                "type": "vert",
+                                                "id": "r[-mn[MWCm1C|{]-z%ho"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "DO": {
+                                        "block": {
+                                          "type": "colorDetecting",
+                                          "id": ":rv5?)ge;j|fgiK]R%+R"
+                                        }
+                                      }
+                                    },
+                                    "next": {
+                                      "block": {
+                                        "type": "rotateangle",
+                                        "id": "UF:uFU5gNYbhy!a]A6rd",
+                                        "fields": {
+                                          "angle": 90,
+                                          "sensAngle": "-1"
+                                        },
+                                        "next": {
+                                          "block": {
+                                            "type": "altitude",
+                                            "id": ":e[q7AZ#GN5HB$0t@gr6",
+                                            "fields": { "meter": "3" },
+                                            "next": {
+                                              "block": {
+                                                "type": "move",
+                                                "id": "rEN$]w=MFHs.SJ7-XQ:?",
+                                                "fields": {
+                                                  "direction": "front"
+                                                },
+                                                "next": {
+                                                  "block": {
+                                                    "type": "controls_whileUntil",
+                                                    "id": "{9R~eK-a@C]a9A?%;zD(",
+                                                    "fields": {
+                                                      "MODE": "WHILE"
+                                                    },
+                                                    "inputs": {
+                                                      "BOOL": {
+                                                        "block": {
+                                                          "type": "logic_compare",
+                                                          "id": "o9z9Ck];V0]W(^;Z`{st",
+                                                          "fields": {
+                                                            "OP": "NEQ"
+                                                          },
+                                                          "inputs": {
+                                                            "A": {
+                                                              "block": {
+                                                                "type": "colorDetect",
+                                                                "id": "}/S4Z(FdG~bzh,_30Ak9"
+                                                              }
+                                                            },
+                                                            "B": {
+                                                              "block": {
+                                                                "type": "bleu",
+                                                                "id": "v,godl^D-DU]AB1[2%UA"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      "DO": {
+                                                        "block": {
+                                                          "type": "colorDetecting",
+                                                          "id": "pbVMh}Ds#T|/xyy_`os0"
+                                                        }
+                                                      }
+                                                    },
+                                                    "next": {
+                                                      "block": {
+                                                        "type": "rotateangle",
+                                                        "id": "ISy=f!La9;}~5`:TYB_.",
+                                                        "fields": {
+                                                          "angle": 90,
+                                                          "sensAngle": "-1"
+                                                        },
+                                                        "next": {
+                                                          "block": {
+                                                            "type": "altitude",
+                                                            "id": "+Gsn0mXQ@QT2lDK%k4DA",
+                                                            "fields": {
+                                                              "meter": "1"
+                                                            },
+                                                            "next": {
+                                                              "block": {
+                                                                "type": "move",
+                                                                "id": "bvIW9!s:?Y8Lgu#zv3H8",
+                                                                "fields": {
+                                                                  "direction": "front"
+                                                                },
+                                                                "next": {
+                                                                  "block": {
+                                                                    "type": "controls_whileUntil",
+                                                                    "id": "lwQt!V|.t8H]E~)A_Szj",
+                                                                    "fields": {
+                                                                      "MODE": "WHILE"
+                                                                    },
+                                                                    "inputs": {
+                                                                      "BOOL": {
+                                                                        "block": {
+                                                                          "type": "logic_compare",
+                                                                          "id": "pJ5$B1WP.4)7]mL3suTR",
+                                                                          "fields": {
+                                                                            "OP": "NEQ"
+                                                                          },
+                                                                          "inputs": {
+                                                                            "A": {
+                                                                              "block": {
+                                                                                "type": "colorDetect",
+                                                                                "id": "zWYd8QJ6vnaa@aFT3u-J"
+                                                                              }
+                                                                            },
+                                                                            "B": {
+                                                                              "block": {
+                                                                                "type": "noir",
+                                                                                "id": "Zjg,{{?zBx(5UK)dJ_W6"
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      "DO": {
+                                                                        "block": {
+                                                                          "type": "colorDetecting",
+                                                                          "id": "#3:@_=)cbM7|]vU@EX.W"
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    "next": {
+                                                                      "block": {
+                                                                        "type": "land",
+                                                                        "id": "+*ob(eRZ,s-E{,bPJi8C"
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "backpack": []
+}

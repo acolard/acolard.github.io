@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingenuity blockly</title>
+  </head>
+  <body>
+    <p>
+      <button onclick="showCode()">Voir le code JavaScript</button>
+      <button onclick="runCode()">Exécuter Simulation</button>
+      <button onclick="resetSim()">Réinitialiser Simulation</button>
+    </p>
+    <p style="width: 100%">
+      <label for="name">Programme au format JSON:</label>
+      <button onclick="save()">Récupérer programme</button>
+      <button onclick="charge()">Charger programme</button>
+      <input
+        id="input"
+        type="text"
+        id="name"
+        name="name"
+        style="width: 100%; margin-top: 1em"
+      />
+    </p>
+    <div class="mainDiv" style="height: 50em; margin: auto">
+      <div
+        id="blocklyDiv"
+        style="float: left; height: 50em; width: 500px"
+      ></div>
+      <!-- <div id="simuDiv"> -->
+      <iframe
+        id="inlineFrameExample"
+        title="Inline Frame Example"
+        width="800px"
+        height="100%"
+        src="http://127.0.0.1:23020"
+      ></iframe>
+      <!-- </div> -->
+    </div>
+
+    <xml
+      xmlns="https://developers.google.com/blockly/xml"
+      id="toolbox"
+      style="display: none"
+    >
+      <category name="Logic" colour="#5b80a5">
+        <block type="controls_if"></block>
+        <block type="logic_compare">
+          <field name="OP">EQ</field>
+        </block>
+        <block type="logic_operation">
+          <field name="OP">AND</field>
+        </block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean">
+          <field name="BOOL">TRUE</field>
+        </block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="Loops" colour="#5ba55b">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_whileUntil">
+          <field name="MODE">WHILE</field>
+        </block>
+        <block type="controls_for">
+          <field name="VAR" id="~FjW8|%:6@$GFxNrQXCG"> i </field>
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+          <value name="BY">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_forEach">
+          <field name="VAR" id="W-^YXj9)J=Rk]laI=`Le"> j </field>
+        </block>
+        <block type="controls_flow_statements">
+          <field name="FLOW">BREAK</field>
+        </block>
+      </category>
+      <category name="Math" colour="#5b67a5">
+        <block type="math_number">
+          <field name="NUM">0</field>
+        </block>
+        <block type="math_arithmetic">
+          <field name="OP">ADD</field>
+          <value name="A">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="B">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_single">
+          <field name="OP">ROOT</field>
+          <value name="NUM">
+            <shadow type="math_number">
+              <field name="NUM">9</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_trig">
+          <field name="OP">SIN</field>
+          <value name="NUM">
+            <shadow type="math_number">
+              <field name="NUM">45</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_constant">
+          <field name="CONSTANT">PI</field>
+        </block>
+        <block type="math_number_property">
+          <mutation divisor_input="false"></mutation>
+          <field name="PROPERTY">EVEN</field>
+          <value name="NUMBER_TO_CHECK">
+            <shadow type="math_number">
+              <field name="NUM">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_round">
+          <field name="OP">ROUND</field>
+          <value name="NUM">
+            <shadow type="math_number">
+              <field name="NUM">3.1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_on_list">
+          <mutation op="SUM"></mutation>
+          <field name="OP">SUM</field>
+        </block>
+        <block type="math_modulo">
+          <value name="DIVIDEND">
+            <shadow type="math_number">
+              <field name="NUM">64</field>
+            </shadow>
+          </value>
+          <value name="DIVISOR">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_constrain">
+          <value name="VALUE">
+            <shadow type="math_number">
+              <field name="NUM">50</field>
+            </shadow>
+          </value>
+          <value name="LOW">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="HIGH">
+            <shadow type="math_number">
+              <field name="NUM">100</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_random_int">
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">100</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_random_float"></block>
+      </category>
+      <category name="Text" colour="#5ba58c">
+        <block type="text">
+          <field name="TEXT"></field>
+        </block>
+        <block type="text_join">
+          <mutation items="2"></mutation>
+        </block>
+        <block type="text_append">
+          <field name="VAR" id="@A_bA/_@b@YQTHEg!+Mn"> item </field>
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT"></field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_length">
+          <value name="VALUE">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_isEmpty">
+          <value name="VALUE">
+            <shadow type="text">
+              <field name="TEXT"></field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_indexOf">
+          <field name="END">FIRST</field>
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" id="`Om`bl;hL|p.-~Z3%G*u"> text </field>
+            </block>
+          </value>
+          <value name="FIND">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_charAt">
+          <mutation at="true"></mutation>
+          <field name="WHERE">FROM_START</field>
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" id="`Om`bl;hL|p.-~Z3%G*u"> text </field>
+            </block>
+          </value>
+        </block>
+        <block type="text_getSubstring">
+          <mutation at1="true" at2="true"></mutation>
+          <field name="WHERE1">FROM_START</field>
+          <field name="WHERE2">FROM_START</field>
+          <value name="STRING">
+            <block type="variables_get">
+              <field name="VAR" id="`Om`bl;hL|p.-~Z3%G*u"> text </field>
+            </block>
+          </value>
+        </block>
+        <block type="text_changeCase">
+          <field name="CASE">UPPERCASE</field>
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_trim">
+          <field name="MODE">BOTH</field>
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_print">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_prompt_ext">
+          <mutation type="TEXT"></mutation>
+          <field name="TYPE">TEXT</field>
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="Lists" colour="#745ba5">
+        <block type="lists_create_with">
+          <mutation items="0"></mutation>
+        </block>
+        <block type="lists_create_with">
+          <mutation items="3"></mutation>
+        </block>
+        <block type="lists_repeat">
+          <value name="NUM">
+            <shadow type="math_number">
+              <field name="NUM">5</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf">
+          <field name="END">FIRST</field>
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" id="!)bbHR#dpJAiF9}zPhcA"> list </field>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getIndex">
+          <mutation statement="false" at="true"></mutation>
+          <field name="MODE">GET</field>
+          <field name="WHERE">FROM_START</field>
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR" id="!)bbHR#dpJAiF9}zPhcA"> list </field>
+            </block>
+          </value>
+        </block>
+        <block type="lists_setIndex">
+          <mutation at="true"></mutation>
+          <field name="MODE">SET</field>
+          <field name="WHERE">FROM_START</field>
+          <value name="LIST">
+            <block type="variables_get">
+              <field name="VAR" id="!)bbHR#dpJAiF9}zPhcA"> list </field>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getSublist">
+          <mutation at1="true" at2="true"></mutation>
+          <field name="WHERE1">FROM_START</field>
+          <field name="WHERE2">FROM_START</field>
+          <value name="LIST">
+            <block type="variables_get">
+              <field name="VAR" id="!)bbHR#dpJAiF9}zPhcA"> list </field>
+            </block>
+          </value>
+        </block>
+        <block type="lists_split">
+          <mutation mode="SPLIT"></mutation>
+          <field name="MODE">SPLIT</field>
+          <value name="DELIM">
+            <shadow type="text">
+              <field name="TEXT">,</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="lists_sort">
+          <field name="TYPE">NUMERIC</field>
+          <field name="DIRECTION">1</field>
+        </block>
+      </category>
+      <category name="Colour" colour="#a5745b">
+        <block type="colour_picker">
+          <field name="COLOUR">#ff0000</field>
+        </block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb">
+          <value name="RED">
+            <shadow type="math_number">
+              <field name="NUM">100</field>
+            </shadow>
+          </value>
+          <value name="GREEN">
+            <shadow type="math_number">
+              <field name="NUM">50</field>
+            </shadow>
+          </value>
+          <value name="BLUE">
+            <shadow type="math_number">
+              <field name="NUM">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="colour_blend">
+          <value name="COLOUR1">
+            <shadow type="colour_picker">
+              <field name="COLOUR">#ff0000</field>
+            </shadow>
+          </value>
+          <value name="COLOUR2">
+            <shadow type="colour_picker">
+              <field name="COLOUR">#3333ff</field>
+            </shadow>
+          </value>
+          <value name="RATIO">
+            <shadow type="math_number">
+              <field name="NUM">0.5</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="Pilotage" colour="#0A8698">
+        <block type="start"></block>
+        <block type="colorDetecting"></block>
+        <block type="altitude"></block>
+        <block type="land"></block>
+        <block type="move"></block>
+        <block type="rotate"></block>
+        <block type="rotateangle"></block>
+        <block type="stop"></block>
+        <block type="wait"></block>
+      </category>
+      <category name="Détection couleur" colour="#fca103">
+        <block type="colorDetect"></block>
+        <block type="rouge"></block>
+        <block type="vert"></block>
+        <block type="bleu"></block>
+        <block type="jaune"></block>
+        <block type="noir"></block>
+        <block type="blanc"></block>
+        <block type="cyan"></block>
+        <block type="magenta"></block>
+      </category>
+      <sep></sep>
+      <category name="Variables" colour="#a55b80" custom="VARIABLE"></category>
+      <category
+        name="Functions"
+        colour="#995ba5"
+        custom="PROCEDURE"
+      ></category> </xml
+    >;
+
+    <script src="https://unpkg.com/blockly@10.4.3/blockly_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@10.4.3/blocks_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@10.4.3/javascript_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@10.4.3/msg/fr.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mit-app-inventor/blockly-plugin-workspace-multiselect@1.0.0/dist/index.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@blockly/workspace-backpack@6.0.12/dist/index.min.js"></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/spaceify/cbor-js@master/cbor.js"
+      integrity="sha512-0ABB8mRQj73e8+aaUzonPYnP34/YsUCf6SGUJp/pj5BUXttDonDIvCI7XuC7C27Qem6yRpzIzTlq8kJSlUNjoQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="C:\Program Files\CoppeliaRobotics\CoppeliaSimEdu\programming\wsRemoteApi\js\WebSocketAsPromised.bundle.js"></script>
+    <script src="C:\Program Files\CoppeliaRobotics\CoppeliaSimEdu\programming\wsRemoteApi\js\RemoteAPIClient.js"></script>
+
+    <script>
+      const theme = Blockly.Theme.defineTheme("themeName", {
+        base: Blockly.Themes.Classic,
+        startHats: true,
+      });
+
+      //---------------------------------------Bloc perso JSON------------------------------------->
+      //-----Bloc démarrer
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "start",
+          message0: "Ingenuity - générer le code",
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["start"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = "\n";
+        return code;
+      };
+
+      //--------bloc mouvement
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "move",
+          message0: "Se déplacer vers %1",
+          args0: [
+            {
+              type: "field_dropdown",
+              name: "direction",
+              options: [
+                ["l'avant", "front"],
+                ["l'arrière", "back"],
+                ["la droite", "left"],
+                ["la gauche", "right"],
+              ],
+            },
+          ],
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["move"] = function (
+        block,
+        generator
+      ) {
+        var text_direction = block.getFieldValue("direction");
+        // TODO: Assemble javascript into code variable.
+        var code = `    await sim.setStringProperty(h, 'customData.move', "${text_direction}");\n`;
+        return code;
+      };
+
+      //--------bloc rotation
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "rotate",
+          message0: "Pivoter vers %1",
+          args0: [
+            {
+              type: "field_dropdown",
+              name: "orientation",
+              options: [
+                ["la droite", "rotateRight"],
+                ["la gauche", "rotateLeft"],
+              ],
+            },
+          ],
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["rotate"] = function (
+        block,
+        generator
+      ) {
+        var rotate = block.getFieldValue("orientation");
+        // TODO: Assemble javascript into code variable.
+        var code = `    await sim.setStringProperty(h, 'customData.move', '${rotate}');\n`;
+        return code;
+      };
+
+      //-----------------bloc rotation avec angle
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "rotateangle",
+          message0: "Pivoter de %1 vers la %2",
+          args0: [
+            {
+              type: "field_angle",
+              name: "angle",
+              angle: 90,
+            },
+            {
+              type: "field_dropdown",
+              name: "sensAngle",
+              options: [
+                ["droite", "-1"],
+                ["gauche", "1"],
+              ],
+            },
+          ],
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["rotateangle"] = function (
+        block,
+        generator
+      ) {
+        var angle_angle = block.getFieldValue("angle");
+        var dropdown_sensangle = block.getFieldValue("sensAngle");
+        // TODO: Assemble javascript into code variable.
+        if ((dropdown_sensangle = "-1")) {
+          var code = `    await sim.setStringProperty(h, 'customData.move', 'rotateRight');\n    var currentAngle  = await sim.getObjectOrientation(h,sim.handle_world);\n    var desirateAngle  = additionnerAngles(currentAngle[0][2]*(180/Math.PI), ${dropdown_sensangle}*${angle_angle});\n     while (Math.round(1000000*currentAngle[0][2])!=Math.round(1000000*desirateAngle)) {\n        var currentAngle  = await sim.getObjectOrientation(h,sim.handle_world);\n    }\n    await sim.setStringProperty(h, 'customData.move', 'stop');\n`;
+        } else {
+          var code = `    await sim.setStringProperty(h, 'customData.move', 'rotateLeft');\n    var currentAngle  = await sim.getObjectOrientation(h,sim.handle_world);\n    var desirateAngle  = additionnerAngles(currentAngle[0][2]*(180/Math.PI), ${dropdown_sensangle}*${angle_angle});\n     while (Math.round(1000000*currentAngle[0][2])!=Math.round(1000000*desirateAngle)) {\n        var currentAngle  = await sim.getObjectOrientation(h,sim.handle_world);\n    }\n    await sim.setStringProperty(h, 'customData.move', 'stop');\n`;
+        }
+
+        return code;
+      };
+
+      //--------bloc stop
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "stop",
+          message0: "Arréter mouvement",
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["stop"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = `    await sim.setStringProperty(h, 'customData.move', 'stop');\n`;
+        return code;
+      };
+
+      //--------bloc altitude
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "altitude",
+          message0: "Monter/Descendre à  %1 mètre(s)",
+          args0: [
+            {
+              type: "field_dropdown",
+              name: "meter",
+              options: [
+                ["1", "1"],
+                ["2", "2"],
+                ["3", "3"],
+              ],
+            },
+          ],
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["altitude"] = function (
+        block,
+        generator
+      ) {
+        var dropdown_meter = block.getFieldValue("meter");
+        // TODO: Assemble javascript into code variable.
+        var code = `    await sim.setStringProperty(h, 'customData.move', 'up${dropdown_meter}');\n    var alt  = await sim.getObjectPosition(h,sim.handle_world);\n    if (alt[0][2]<${dropdown_meter}.0) {\n        while (alt[0][2] + 0.01 < ${dropdown_meter}.0) {\n          var alt = await sim.getObjectPosition(h, sim.handle_world);\n        }\n      } else {\n        while (alt[0][2] - 0.01 > ${dropdown_meter}.0) {\n           var alt = await sim.getObjectPosition(h, sim.handle_world);\n          }\n      }\n`;
+        return code;
+      };
+
+      //--------bloc attérissage
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "land",
+          message0: "Attérissage",
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["land"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = `    await sim.setStringProperty(h, 'customData.move', 'land');\n    var alt  = await sim.getObjectPosition(h,sim.handle_world);\n     while (alt[0][2]>0.05) {\n        var  alt = await sim.getObjectPosition(h,sim.handle_world);\n    }\n`;
+        return code;
+      };
+
+      //--------bloc attendre
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "wait",
+          message0: "attendre %1 secondes",
+          args0: [
+            {
+              type: "input_value",
+              name: "SECONDS",
+              check: "Number",
+            },
+          ],
+          inputsInline: true,
+          previousStatement: null,
+          nextStatement: null,
+          colour: 195,
+          tooltip: "",
+          helpUrl: "",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["wait"] = function (
+        block,
+        generator
+      ) {
+        var seconds = generator.valueToCode(
+          block,
+          "SECONDS",
+          javascript.Order.ATOMIC
+        );
+        var number_time = 1000 * seconds;
+        // TODO: Assemble javascript into code variable.
+        var code = `     await waitforme(${number_time});\n`;
+        return code;
+      };
+
+      //--------bloc detection couleurs
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "colorDetecting",
+          message0: "Capter la couleur",
+          previousStatement: null,
+          nextStatement: null,
+          colour: "#fca103",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["colorDetecting"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = `    var[c]=await sim.getStringProperty(s,'customData.color');\n`;
+        return code;
+      };
+
+      //--------bloc couleur captée
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "colorDetect",
+          message0: "Couleur captée",
+          output: null,
+          colour: "#fca103",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["colorDetect"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ["c", Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc rouge
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "rouge",
+          message0: "rouge",
+          output: null,
+          colour: "#FF0000",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["rouge"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"rouge"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc vert
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "vert",
+          message0: "vert",
+          output: null,
+          colour: "#008000",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["vert"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"vert"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc bleu
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "bleu",
+          message0: "bleu",
+          output: null,
+          colour: "#0000FF",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["bleu"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"bleu"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc jaune
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "jaune",
+          message0: "jaune",
+          output: null,
+          colour: "#FFFF00",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["jaune"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"jaune"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc blanc
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "blanc",
+          message0: "blanc",
+          output: null,
+          colour: "#FFFFFF",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["blanc"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"blanc"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc noir
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "noir",
+          message0: "noir",
+          output: null,
+          colour: "#000000",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["noir"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"noir"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc cyan
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "cyan",
+          message0: "cyan",
+          output: null,
+          colour: "#2BFAFA",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["cyan"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"cyan"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      //--------bloc magenta
+
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: "magenta",
+          message0: "magenta",
+          output: null,
+          colour: "#FF00FF",
+        },
+      ]);
+
+      javascript.javascriptGenerator.forBlock["magenta"] = function (
+        block,
+        generator
+      ) {
+        // TODO: Assemble javascript into code variable.
+        var code = ['"magenta"', Blockly.JavaScript.ORDER_ATOMIC];
+        return code;
+      };
+
+      /*------sauvergarde et chargement--*/
+
+      function save() {
+        window.state = Blockly.serialization.workspaces.save(Workspace);
+        document.getElementById("input").value = JSON.stringify(window.state);
+      }
+
+      function charge() {
+        if (document.getElementById("input").value != "") {
+          try {
+            a = JSON.parse(document.getElementById("input").value);
+            Blockly.serialization.workspaces.load(a, Workspace);
+          } catch (e) {
+            alert(e); //error in the above string(in this case,yes)!
+          }
+        }
+      }
+
+      /*---------------------Injection de blockly---------*/
+
+      options = {
+        toolbox: document.getElementById("toolbox"),
+        theme: theme,
+        zoom: {
+          controls: true,
+          wheel: true,
+          startScale: 1.0,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2,
+          pinch: true,
+        },
+        trashcan: true,
+        // The plugin should work with other plugins
+        // that require a custom block dragger, like
+        // the scroll-options plugin as this plugin
+        // was updated to not require a custom dragger.
+
+        // Double click the blocks to collapse/expand
+        // them (A feature from MIT App Inventor).
+        useDoubleClick: false,
+        // Bump neighbours after dragging to avoid overlapping.
+        bumpNeighbours: false,
+
+        // Keep the fields of multiple selected same-type blocks with the same value
+        // See note below.
+        multiFieldUpdate: true,
+
+        // Auto focus the workspace when the mouse enters.
+        workspaceAutoFocus: true,
+
+        // Use custom icon for the multi select controls.
+        multiselectIcon: {
+          hideIcon: false,
+          weight: 3,
+          enabledIcon:
+            "https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/select.svg",
+          disabledIcon:
+            "https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/unselect.svg",
+        },
+
+        // Keys for multi-selection mode switch. Any key value is possible (see MDN docs).
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+        // The best support (default) is given for Shift.  Provide an empty array []
+        // will revert to the default key.
+        // One thing to make sure is that the multiSelectKeys do not overlap with the
+        // keys defined for the shortcut actions as it will lead to a cascade of calls,
+        // which is not ideal for the browser.
+        multiSelectKeys: ["Shift"],
+
+        multiselectCopyPaste: {
+          // Enable the copy/paste accross tabs feature (true by default).
+          crossTab: true,
+          // Show the copy/paste menu entries (true by default).
+          menu: true,
+        },
+      };
+
+      var Workspace = Blockly.inject("blocklyDiv", options);
+
+      // Initialize plugin.
+      const multiselectPlugin = new Multiselect(Workspace);
+      multiselectPlugin.init(options);
+
+      // Initialize plugin.
+      const backpack = new Backpack(Workspace);
+      backpack.init();
+
+      //----------------------------------------
+
+      function showCode() {
+        // Generate JavaScript code and display it.
+        javascript.javascriptGenerator.INFINITE_LOOP_TRAP = null;
+        var code = javascript.javascriptGenerator.workspaceToCode(Workspace);
+        code =
+          "(async () => {\n    await client.websocket.open();\n    var sim = await client.require('sim');\n    var [h] = await sim.getObject('/Sphere');\n    var [s] = await sim.getObject('/Sphere/visionSensor');\n" +
+          code +
+          "})();";
+        alert(code);
+        console.log(code);
+      }
+
+      function runCode() {
+        // Generate JavaScript code and run it.
+        window.LoopTrap = 1000;
+        javascript.javascriptGenerator.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap < 0) throw "Infinite loop.";\n';
+        var code = javascript.javascriptGenerator.workspaceToCode(Workspace);
+
+        javascript.javascriptGenerator.INFINITE_LOOP_TRAP = null;
+        code =
+          "(async () => {\n    await client.websocket.open();\n    var sim = await client.require('sim');\n    var [h] = await sim.getObject('/Sphere');\n    var [s] = await sim.getObject('/Sphere/visionSensor');\n" +
+          code +
+          "})();";
+
+        var client = new RemoteAPIClient("localhost", 23050, "json");
+
+        /*(async () => {
+                            await client.websocket.open();
+                            var sim = await client.require("sim");
+                            var [h] = await sim.getObject("/Sphere");
+                            await sim.setStringProperty(h, "customData.move", "up");
+                            await waitforme(5000);
+                            await sim.setStringProperty(h, "customData.move", "down");
+                            await waitforme(5000);
+                            await sim.setStringProperty(h, "customData.move", "up");
+                            //await client.websocket.close();
+                          })();*/
+
+        (async () => {
+          var client = new RemoteAPIClient("localhost", 23050, "json");
+          await client.websocket.open();
+          var sim = await client.require("sim");
+          var [h] = await sim.startSimulation();
+        })();
+
+        try {
+          eval(code);
+        } catch (e) {
+          alert(e);
+        }
+      }
+
+      function waitforme(millisec) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve("");
+          }, millisec);
+        });
+      }
+
+      function resetSim() {
+        (async () => {
+          var client = new RemoteAPIClient("localhost", 23050, "json");
+          await client.websocket.open();
+          var sim = await client.require("sim");
+          var [h] = await sim.stopSimulation();
+        })();
+      }
+
+      function additionnerAngles(angle1, angle2) {
+        let somme = (angle1 + angle2) % 360;
+        if (somme < 0) {
+          somme += 360;
+        }
+        return (((somme + 180) % 360) - 180) * (Math.PI / 180);
+      }
+    </script>
+  </body>
+</html>
