@@ -771,7 +771,7 @@ function modifCode(code) {
 
   code = trouverDeclarationsVar(code);
 
-  console.log(code);
+  //console.log(code);
 
   return code;
 }
@@ -815,7 +815,7 @@ function stepCode() {
     // Ajout de code au déut avec la fonction teststep qui tourne en boucle aprés chaque étape jusqu'à un nouveau click sur step (nextstep++)
 
     code =
-      "const initSim = () => {\n    speed = 0;\n    init = false;\n}\n\nconst testStep = (nextStep,timerOn) =>\n    new Promise(resolve =>\n        setTimeout(() => resolve(nextStep > lastStep && timerOn == false ? 'ok' : 'no'), 1),\n    );\n\nconst repeatedGreetings = async () => {\n" +
+      "\nconst testStepTimer = (timerOn) =>\n    new Promise(resolve =>\n        setTimeout(() => resolve(timerOn == false ? 'ok' : 'no'), 1),\n    );\n const initSim = () => {\n    speed = 0;\n    init = false;\n}\n\nconst testStep = (nextStep,timerOn) =>\n    new Promise(resolve =>\n        setTimeout(() => resolve(nextStep > lastStep && timerOn == false ? 'ok' : 'no'), 1),\n    );\n\nconst repeatedGreetings = async () => {\n" +
       code;
     code =
       code +
@@ -824,10 +824,27 @@ function stepCode() {
     // modification du code pour bloquer l'éxecution entre chaque étape en modifiant le mot highlightBlock(?????)
 
     const lines = code.split("\n"); // division du code par lignes
-    const regexpSize = /highlightBlock(.*?)\);/gi; //code pour touver highlightBlock(?????)
+
+
+    const regexpSize = /waitForSeconds(.*?)\);/gi; //code pour touver waitForSeconds(?????)
 
     for (let i = 0; i < lines.length; i++) {
       for (const match of lines[i].matchAll(regexpSize)) {
+        lines[i] = lines[i].replace(
+          match[0],
+          "\n    " +
+            match[0].concat(
+              "\n    resultWait = null;\n    while (resultWait != 'ok') {\n        resultWait = await testStepTimer(timerOn);\n    };"
+            )
+        );
+      }
+    }
+
+
+    const regexpSize2 = /highlightBlock(.*?)\);/gi; //code pour touver highlightBlock(?????)
+
+    for (let i = 0; i < lines.length; i++) {
+      for (const match of lines[i].matchAll(regexpSize2)) {
         lines[i] = lines[i].replace(
           match[0],
           "\n    " +
