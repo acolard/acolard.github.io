@@ -6,10 +6,22 @@
     <title>Ingenuity blockly</title>
   </head>
   <body>
+	<p>
+		<label>Pour "streamer" la scene (pas obligatoire), dans Coppeliasim cliquer sur: [Modules -> Connectivity -> Visualization stream]</label><br>
+		<label for="numPort">Saisir le numéro du port de la websocket (afficher au démarrage dans la console de coppeliasim; "WebSocket Remote API server starting (port=?????)...") :</label>
+		<input
+		id="numPort"
+		type="number"
+		id="name"
+		name="name"
+		style="width: 20%; margin-top: 1em"
+		value="23050"
+		/>	
+		</p>
     <p>
       <button onclick="showCode()">Voir le code JavaScript</button>
       <button onclick="runCode()">Exécuter Simulation</button>
-      <button onclick="resetSim()">Réinitialiser Simulation</button>
+      <button onclick="resetSim()">Réinitialiser Simulation</button>	  
     </p>
     <p style="width: 100%">
       <label for="name">Programme au format JSON:</label>
@@ -22,6 +34,7 @@
         name="name"
         style="width: 100%; margin-top: 1em"
       />
+  
     </p>
     <div class="mainDiv" style="height: 50em; margin: auto">
       <div
@@ -1028,7 +1041,7 @@
           code +
           "})();";
 
-        var client = new RemoteAPIClient("localhost", 23050, "json");
+        var client = new RemoteAPIClient("localhost", document.getElementById("numPort").value, "json");
 
         /*(async () => {
                             await client.websocket.open();
@@ -1043,7 +1056,7 @@
                           })();*/
 
         (async () => {
-          var client = new RemoteAPIClient("localhost", 23050, "json");
+          var client = new RemoteAPIClient("localhost", document.getElementById("numPort").value, "json");
           await client.websocket.open();
           var sim = await client.require("sim");
           var [h] = await sim.startSimulation();
@@ -1066,7 +1079,7 @@
 
       function resetSim() {
         (async () => {
-          var client = new RemoteAPIClient("localhost", 23050, "json");
+          var client = new RemoteAPIClient("localhost", document.getElementById("numPort").value, "json");
           await client.websocket.open();
           var sim = await client.require("sim");
           var [h] = await sim.stopSimulation();
