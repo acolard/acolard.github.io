@@ -1,0 +1,84 @@
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Diapo — Liste détaillée</title>
+		<style>
+			:root{ --bg:#fff; --fg:#111; --accent:#1e90ff; }
+			html,body{ height:100%; margin:0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--fg); }
+			.slide{ padding:28px; box-sizing:border-box; display:flex; flex-direction:column; gap:18px; height:100%; }
+			h1{ font-size:1.6rem; margin:0; color:var(--accent); }
+			p.lead{ margin:0; color:#444; }
+			.list{ background: #f7f9fc; border-radius:8px; padding:12px 16px; box-shadow: 0 1px 0 rgba(0,0,0,0.03); }
+			.list ul{ margin:0; padding-left:1.2rem; }
+			.list li{ margin:8px 0; line-height:1.4; }
+			/* reveal animation */
+			.list li.reveal{ opacity:0; transform: translateY(8px); transition: opacity 320ms ease, transform 320ms ease; }
+			.list li.reveal.visible{ opacity:1; transform:none; }
+			/* instruction */
+			.hint{ color:#666; font-size:0.9rem; }
+			/* responsive */
+			@media (min-width:800px){ .slide{ padding:48px; } h1{ font-size:2rem; } }
+			/* focus helpers for keyboard navigation */
+			.list:focus-within{ outline: 3px solid rgba(30,144,255,0.2); }
+		</style>
+	</head>
+	<body>
+		<main class="slide" role="article" aria-labelledby="title">
+			<h1 id="title">Liste détaillée</h1>
+			<p class="lead">Voici une liste détaillée des éléments importants — cliquez n'importe où ou appuyez sur Entrée/Espace pour révéler les éléments.</p>
+
+			<section class="list" aria-label="Liste des éléments" tabindex="0">
+				<ul id="progressive-list">
+					<li class="reveal" aria-hidden="true"><strong>Item 1</strong> — description courte et claire pour l'élément un.</li>
+					<li class="reveal" aria-hidden="true"><strong>Item 2</strong> — détails supplémentaires sur l'élément deux.</li>
+					<li class="reveal" aria-hidden="true"><strong>Item 3</strong> — remarques et points d'attention.</li>
+				</ul>
+			</section>
+
+			<small class="hint">Conseil : cliquez n'importe où (ou appuyez sur Entrée / Espace) pour afficher chaque élément.</small>
+		</main>
+
+		<!-- aria live region to announce revealed items -->
+		<div id="aria-status" role="status" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
+
+		<script>
+			(function(){
+				const items = Array.from(document.querySelectorAll('#progressive-list li'));
+				const status = document.getElementById('aria-status');
+				let next = 0;
+
+				function showNext(){
+					if(next >= items.length) return;
+					const li = items[next];
+					li.classList.add('visible');
+					li.setAttribute('aria-hidden','false');
+					status.textContent = `Élément ${next+1} : ${li.textContent.trim()}`;
+					next++;
+				}
+
+				// Reveal first item immediately if you want; currently start hidden
+				// document.addEventListener('DOMContentLoaded', showNext);
+
+				document.addEventListener('click', (e) => {
+					const interactive = e.target.closest('a,button,input,textarea,select');
+					if(interactive) return; // ignore clicks on controls
+					showNext();
+				});
+
+				document.addEventListener('keydown', (e) => {
+					if(e.key === 'Enter' || e.key === ' '){
+						e.preventDefault();
+						showNext();
+					}
+				});
+
+				// focus list for keyboard users
+				const list = document.querySelector('.list');
+				if(list) list.focus();
+			})();
+		</script>
+	</body>
+</html>
