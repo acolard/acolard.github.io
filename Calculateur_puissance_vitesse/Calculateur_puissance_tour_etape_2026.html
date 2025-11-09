@@ -1,0 +1,315 @@
+<!doctype html>
+
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calculateur puissance ↔ vitesse — L'Étape du Tour 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#60a5fa}
+    body{font-family:Inter,system-ui,Arial;background:#f5f7fb;color:#0b1220;margin:0;padding:24px}
+    .container{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
+.card{background:white;border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(12,15,30,0.06)}
+label{display:block;font-size:13px;color:#314155;margin-bottom:6px}
+input[type=number],select{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef6;font-size:14px}
+.row{display:flex;gap:8px}
+button{background:var(--accent);color:white;border:0;padding:10px 12px;border-radius:10px;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:8px;border-bottom:1px solid #eef3f8;text-align:left;font-size:13px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.result{font-weight:700;font-size:18px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+footer{margin-top:18px;color:var(--muted);font-size:13px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Calculateur puissance ↔ vitesse — L'Étape du Tour 2026</h1>
+        <p class="lead">Entrez ta puissance moyenne (W) ou tes paramètres pour estimer vitesse et temps sur les cols et sur l'étape complète.</p>
+      </div>
+    </header><div class="grid">
+  <div class="card">
+    <h3>Paramètres utilisateur</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div>
+        <label>Poids coureur (kg)</label>
+        <input id="riderMass" type="number" value="70" step="0.1">
+      </div>
+      <div>
+        <label>Poids vélo + équipement (kg)</label>
+        <input id="bikeMass" type="number" value="8" step="0.1">
+      </div>
+      <div>
+        <label>Puissance moyenne (W)</label>
+        <input id="powerW" type="number" value="200" step="1">
+      </div>
+      <div>
+        <label>CdA (m²)</label>
+        <input id="cda" type="number" value="0.50" step="0.01">
+      </div>
+      <div>
+        <label>Crr (roulement)</label>
+        <input id="crr" type="number" value="0.005" step="0.0001">
+      </div>
+      <div>
+        <label>Densité air ρ (kg/m³)</label>
+        <input id="rho" type="number" value="1.10" step="0.01">
+      </div>
+    </div>
+
+    <hr>
+    <h3>Parcours (valeurs par défaut)</h3>
+    <p class="small muted">Les montées listées sont les ascensions principales ; le reste du parcours est approximé en descentes et plats/rolling.</p>
+    <table>
+      <thead><tr><th>Col</th><th>Distance (km)</th><th>Pente</th><th>D+</th></tr></thead>
+      <tbody id="colsTable">
+        <!-- Rempli par JS -->
+      </tbody>
+    </table>
+
+    <div style="margin-top:10px" class="controls">
+      <button id="computeBtn">Calculer</button>
+      <button id="powersTableBtn">Générer tableau vitesses (180→260 W)</button>
+      <button id="resetBtn">Réinitialiser</button>
+    </div>
+
+    <div style="margin-top:12px">
+      <div>Vitesse moyenne estimée : <span id="avgSpeed" class="result">-</span> km/h</div>
+      <div>Temps total estimé : <span id="totalTime" class="result">-</span></div>
+    </div>
+
+    <hr>
+    <h3>Détails par montée</h3>
+    <table>
+      <thead><tr><th>Col</th><th>Vitesse (km/h)</th><th>Temps</th><th>Puissance (W)</th></tr></thead>
+      <tbody id="perClimb"></tbody>
+    </table>
+
+  </div>
+
+  <aside class="card">
+    <h3>Aide & formules</h3>
+    <p class="small muted">Formule utilisée (approx) :</p>
+    <pre class="small">P = m·g·v·(grade + Crr) + 0.5·ρ·CdA·v³
+
+v en m/s, grade = pente en fraction (ex: 7.6% = 0.076)</pre> <p class="small">On résout numériquement v (bisection) pour retrouver la vitesse correspondant à une puissance donnée.</p>
+
+<hr>
+    <h4>Paramètres pour l'étape</h4>
+    <p class="small">Distance totale : <strong>170 km</strong><br>D+ total : <strong>≈ 5 400 m</strong></p>
+    <label>Vitesse descente moyenne (km/h)</label>
+    <input id="descSpeed" type="number" value="50">
+    <label>Vitesse rolling / plats (km/h)</label>
+    <input id="rollingSpeed" type="number" value="27">
+
+    <hr>
+    <h4>Export / Impression</h4>
+    <div style="display:flex;gap:8px"><button id="printBtn">Imprimer</button><button id="csvBtn">Exporter CSV</button></div>
+
+    <footer>
+      <p class="small muted">Basé sur le modèle gravité + roulement + aérodynamique. Ajuste les paramètres pour ta situation réelle.</p>
+    </footer>
+  </aside>
+</div>
+
+  </div>  <script>
+    // Données par défaut des cols
+    const cols = [
+      {name:'Croix de Fer', dist:24.0, grade:0.052, climb:1250},
+      {name:'Télégraphe', dist:11.9, grade:0.071, climb:845},
+      {name:'Galibier', dist:17.7, grade:0.069, climb:1220},
+      {name:'Sarenne', dist:12.8, grade:0.073, climb:935}
+    ];
+
+    // Remplissage du tableau cols
+    const colsTable = document.getElementById('colsTable');
+    cols.forEach(c=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${c.name}</td><td>${c.dist.toFixed(1)}</td><td>${(c.grade*100).toFixed(2)} %</td><td>${c.climb}</td>`;
+      colsTable.appendChild(tr);
+    });
+
+    // éléments
+    const riderMassEl = document.getElementById('riderMass');
+    const bikeMassEl = document.getElementById('bikeMass');
+    const powerEl = document.getElementById('powerW');
+    const cdaEl = document.getElementById('cda');
+    const crrEl = document.getElementById('crr');
+    const rhoEl = document.getElementById('rho');
+    const computeBtn = document.getElementById('computeBtn');
+    const perClimb = document.getElementById('perClimb');
+    const avgSpeedEl = document.getElementById('avgSpeed');
+    const totalTimeEl = document.getElementById('totalTime');
+    const descSpeedEl = document.getElementById('descSpeed');
+    const rollingSpeedEl = document.getElementById('rollingSpeed');
+    const powersTableBtn = document.getElementById('powersTableBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const printBtn = document.getElementById('printBtn');
+    const csvBtn = document.getElementById('csvBtn');
+
+    const g = 9.81;
+
+    // Calcule la puissance demandée pour une vitesse v (m/s) et un grade donné (fraction)
+    function powerForSpeed(v, mTotal, grade, crr, cda, rho){
+      const Pg = mTotal * g * v * grade;
+      const Pr = crr * mTotal * g * v;
+      const Pa = 0.5 * rho * cda * Math.pow(v,3);
+      return Pg + Pr + Pa; // W (hors pertes)
+    }
+
+    // Résout v pour une puissance P (W) via bisection sur v (m/s)
+    function speedForPower(Ptarget, mTotal, grade, crr, cda, rho){
+      // bornes raisonnables 0.1 m/s -> 15 m/s (~54 km/h)
+      let lo = 0.05, hi = 15, mid;
+      for(let i=0;i<60;i++){
+        mid = (lo+hi)/2;
+        const p = powerForSpeed(mid, mTotal, grade, crr, cda, rho);
+        if(p> Ptarget) hi = mid; else lo = mid;
+      }
+      return mid; // m/s
+    }
+
+    function secsToHMS(s){
+      s = Math.round(s);
+      const h = Math.floor(s/3600); s-=h*3600;
+      const m = Math.floor(s/60); s-=m*60;
+      return `${h}h ${m}m ${s}s`;
+    }
+
+    function computeAll(){
+      perClimb.innerHTML = '';
+      const mTotal = parseFloat(riderMassEl.value||0) + parseFloat(bikeMassEl.value||0);
+      const P = parseFloat(powerEl.value||200);
+      const cda = parseFloat(cdaEl.value||0.5);
+      const crr = parseFloat(crrEl.value||0.005);
+      const rho = parseFloat(rhoEl.value||1.10);
+
+      // détails par montée
+      let totalClimbTime = 0; // s
+      let totalClimbDist = 0; // km
+      cols.forEach(c=>{
+        const v = speedForPower(P, mTotal, c.grade, crr, cda, rho); // m/s
+        const vKmh = v*3.6;
+        const time_s = (c.dist*1000)/v;
+        totalClimbTime += time_s;
+        totalClimbDist += c.dist;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${c.name}</td><td>${vKmh.toFixed(2)}</td><td>${secsToHMS(time_s)}</td><td>${P.toFixed(0)}</td>`;
+        perClimb.appendChild(tr);
+      });
+
+      // montée cumulée
+      // On suppose distance totale = 170 km
+      const totalDist = 170;
+      const climbsDist = cols.reduce((a,b)=>a+b.dist,0);
+      const restDist = totalDist - climbsDist; // km
+
+      // On sépare le reste en descentes et rolling (modifiables)
+      const descDist = 30; // km par défaut
+      const rollingDist = Math.max(0, restDist - descDist);
+
+      // vitesse sur rolling (plat / vallonné) : on résout la vitesse sur grade=0
+      const vRolling = speedForPower(P, mTotal, 0, crr, cda, rho); // m/s
+      const vRollingKmh = vRolling*3.6;
+      const vDescKmh = parseFloat(descSpeedEl.value||50);
+
+      // temps totaux
+      const tClimbs = totalClimbTime; // s
+      const tRolling = (rollingDist / vRollingKmh) * 3600; // s
+      const tDesc = (descDist / vDescKmh) * 3600; // s
+      const tTotal = tClimbs + tRolling + tDesc;
+      const avgSpeed = totalDist / (tTotal/3600);
+
+      avgSpeedEl.textContent = avgSpeed.toFixed(2);
+      totalTimeEl.textContent = secsToHMS(tTotal);
+
+      // ajout d'un détail récap
+      const recapTr = document.createElement('tr');
+      recapTr.innerHTML = `<td><strong>Total (estimé)</strong></td><td><strong>${avgSpeed.toFixed(2)}</strong></td><td><strong>${secsToHMS(tTotal)}</strong></td><td><strong>${P.toFixed(0)}</strong></td>`;
+
+      // footer row in perClimb: not necessary
+
+      // Afficher explications
+      // console.log breakdown
+      console.log({mTotal,P,vRollingKmh,vDescKmh,climbsDist,rollingDist,descDist,tClimbs});
+    }
+
+    computeBtn.addEventListener('click',computeAll);
+
+    // Table vitesses pour une gamme de puissances
+    powersTableBtn.addEventListener('click',()=>{
+      const start = 180, end = 260, step = 10;
+      const mTotal = parseFloat(riderMassEl.value||0) + parseFloat(bikeMassEl.value||0);
+      const cda = parseFloat(cdaEl.value||0.5);
+      const crr = parseFloat(crrEl.value||0.005);
+      const rho = parseFloat(rhoEl.value||1.10);
+
+      let html = '<table><thead><tr><th>P (W)</th><th>V moyenne estimée (km/h)</th><th>Temps total estimé</th></tr></thead><tbody>';
+      for(let P=start;P<=end;P+=step){
+        // calc as computeAll but inline
+        let totalClimbTime = 0;
+        cols.forEach(c=>{
+          const v = speedForPower(P, mTotal, c.grade, crr, cda, rho);
+          const time_s = (c.dist*1000)/v;
+          totalClimbTime += time_s;
+        });
+        const totalDist = 170;
+        const climbsDist = cols.reduce((a,b)=>a+b.dist,0);
+        const restDist = totalDist - climbsDist; const descDist = 30; const rollingDist = Math.max(0, restDist-descDist);
+        const vRolling = speedForPower(P, mTotal, 0, crr, cda, rho) *3.6;
+        const tRolling = (rollingDist / vRolling) *3600;
+        const tDesc = (descDist / parseFloat(descSpeedEl.value||50)) *3600;
+        const tTotal = totalClimbTime + tRolling + tDesc;
+        const avgSpeed = totalDist / (tTotal/3600);
+        html += `<tr><td>${P}</td><td>${avgSpeed.toFixed(2)}</td><td>${secsToHMS(tTotal)}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      // afficher dans une nouvelle fenêtre
+      const w = window.open('', '_blank', 'noopener');
+      w.document.write('<title>Tableau vitesses — puissances</title>');
+      w.document.write('<body style="font-family:Inter,Arial;padding:18px">');
+      w.document.write('<h2>Vitesse moyenne estimée pour différentes puissances</h2>');
+      w.document.write(html);
+      w.document.close();
+    });
+
+    resetBtn.addEventListener('click',()=>{
+      riderMassEl.value = 70; bikeMassEl.value = 8; powerEl.value = 200; cdaEl.value = 0.50; crrEl.value = 0.005; rhoEl.value = 1.10; descSpeedEl.value = 50; rollingSpeedEl.value = 27; avgSpeedEl.textContent='-'; totalTimeEl.textContent='-'; perClimb.innerHTML='';
+    });
+
+    printBtn.addEventListener('click',()=>window.print());
+
+    // Export CSV simple (per-climb breakdown)
+    csvBtn.addEventListener('click',()=>{
+      const mTotal = parseFloat(riderMassEl.value||0) + parseFloat(bikeMassEl.value||0);
+      const P = parseFloat(powerEl.value||200);
+      const cda = parseFloat(cdaEl.value||0.5);
+      const crr = parseFloat(crrEl.value||0.005);
+      const rho = parseFloat(rhoEl.value||1.10);
+      let csv = 'Col;Distance_km;V_kmh;Time_s;Power_W\n';
+      cols.forEach(c=>{
+        const v = speedForPower(P, mTotal, c.grade, crr, cda, rho);
+        const vKmh = v*3.6; const time_s = (c.dist*1000)/v;
+        csv += `${c.name};${c.dist};${vKmh.toFixed(2)};${Math.round(time_s)};${P}\n`;
+      });
+      const blob = new Blob([csv],{type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'per_climb_breakdown.csv'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // compute on enter key for convenience
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Enter') computeAll(); });
+
+    // initial compute
+    computeAll();
+  </script></body>
+</html>
